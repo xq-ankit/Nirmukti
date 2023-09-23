@@ -1,18 +1,19 @@
-import { useLogin } from "@refinedev/core";
 import { useEffect, useRef } from "react";
-
+import { useLogin } from "@refinedev/core";
+import { QueryClient, QueryClientProvider, useQueryClient } from "react-query";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import { ThemedTitleV2 } from "@refinedev/mui";
-
-//logo...
-// import {#} from "public";
 import { CredentialResponse } from "../../interfaces/google";
-export const GettingStarted: React.FC = () => {
+
+const queryClient = new QueryClient();
+
+const GettingStarted = () => {
+  const queryClient = useQueryClient();
   const { mutate: login } = useLogin<CredentialResponse>();
 
-  const GoogleButton = (): JSX.Element => {
+  const GoogleButton = () => {
     const divRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -50,12 +51,10 @@ export const GettingStarted: React.FC = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor:"#2E1A47"
+        backgroundColor: "#2E1A47",
       }}
     >
-      <Box
-        sx={{backgroundColor:'#2E1A47'}}
-      >
+      <Box sx={{ backgroundColor: "#2E1A47" }}>
         <ThemedTitleV2
           collapsed={false}
           wrapperStyles={{
@@ -73,10 +72,18 @@ export const GettingStarted: React.FC = () => {
             src={} //logo
           />
           Nirmukti */}
-         
         </Typography>
       </Box>
     </Container>
   );
 };
 
+const App = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <GettingStarted />
+    </QueryClientProvider>
+  );
+};
+
+export default App;

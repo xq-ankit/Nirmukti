@@ -12,10 +12,12 @@ import "./styles/global.scss";
 import Product from "./pages/Product/Product";
 import User from "./pages/user/User";
 import Users from "./pages/users/Users";
-import { GettingStarted } from "./pages/GettingStarted/GettingStarted";
+import GettingStarted from "./pages/GettingStarted/GettingStarted";
+import { QueryClient, QueryClientProvider, useQueryClient } from "react-query";
 
 function App() {
    
+const queryClient = new QueryClient();
   const Layout = () => {
     return (
       <div className="main">
