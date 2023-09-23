@@ -1,89 +1,62 @@
-import { useEffect, useRef } from "react";
-import { useLogin } from "@refinedev/core";
-import { QueryClient, QueryClientProvider, useQueryClient } from "react-query";
-import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
-import { ThemedTitleV2 } from "@refinedev/mui";
-import { CredentialResponse } from "../../interfaces/google";
+import React, { useState, useEffect } from 'react';
+import "./gettingStarted.scss";
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 
-const queryClient = new QueryClient();
+const GettingStarted: React.FC = () => {
+  const [formData, setFormData] = useState({ username: '', password: '' });
+  const [errors, setErrors] = useState({ username: '', password: '' });
 
-const GettingStarted = () => {
-  const queryClient = useQueryClient();
-  const { mutate: login } = useLogin<CredentialResponse>();
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
-  const GoogleButton = () => {
-    const divRef = useRef<HTMLDivElement>(null);
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-    useEffect(() => {
-      if (typeof window === "undefined" || !window.google || !divRef.current) {
-        return;
-      }
-
-      try {
-        window.google.accounts.id.initialize({
-          ux_mode: "popup",
-          client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
-          callback: async (res: CredentialResponse) => {
-            if (res.credential) {
-              login(res);
-            }
-          },
-        });
-        window.google.accounts.id.renderButton(divRef.current, {
-          theme: "filled_blue",
-          size: "medium",
-          type: "standard",
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    }, []);
-
-    return <div ref={divRef} />;
+    // Add form submission logic here
   };
 
   return (
-    <Container
-      style={{
-        height: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#2E1A47",
-      }}
-    >
-      <Box sx={{ backgroundColor: "#2E1A47" }}>
-        <ThemedTitleV2
-          collapsed={false}
-          wrapperStyles={{
-            fontSize: "22px",
-            justifyContent: "center",
-          }}
-        />
-
-        <GoogleButton />
-
-        <Typography align="center" color={"text.secondary"} fontSize="12px">
-          Powered by
-          {/* <img
-            alt="Nirmukti logo"
-            src={} //logo
+    <div className="login-page">
+      <h1>Login</h1>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label>Username</label>
+          <input
+            type="text"
+            name="username"
+            value={formData.username}
+            onChange={handleInputChange}
           />
-          Nirmukti */}
-        </Typography>
-      </Box>
-    </Container>
+          {errors.username && <span className="error">{errors.username}</span>}
+        </div>
+        <div className="form-group">
+          <label>Password</label>
+          <input
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleInputChange}
+          />
+          {errors.password && <span className="error">{errors.password}</span>}
+        </div>
+        <button type="submit">Login</button>
+        <div className="google-login-container">
+          <GoogleOAuthProvider clientId="301175040082-a9dfvqhvo6o5upsl5e16rglm2b5jbm8m.apps.googleusercontent.com">
+            <GoogleLogin
+              onSuccess={credentialResponse => {
+                console.log(credentialResponse);
+              }}
+              onError={() => {
+                console.log('Login Failed');
+              }}
+            />
+          </GoogleOAuthProvider>
+        </div>
+      </form>
+    </div>
   );
 };
 
-const App = () => {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <GettingStarted />
-    </QueryClientProvider>
-  );
-};
-
-export default App;
+export default GettingStarted;
