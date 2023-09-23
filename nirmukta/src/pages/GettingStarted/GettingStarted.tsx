@@ -8,8 +8,7 @@ import { ThemedTitleV2 } from "@refinedev/mui";
 
 //logo...
 // import {#} from "public";
-import { CredentialResponse } from "@mui/x-src-componets-google.d.ts";
-
+import { CredentialResponse } from "../../interfaces/google";
 export const GettingStarted: React.FC = () => {
   const { mutate: login } = useLogin<CredentialResponse>();
 
@@ -69,11 +68,11 @@ export const GettingStarted: React.FC = () => {
 
         <Typography align="center" color={"text.secondary"} fontSize="12px">
           Powered by
-          <img
+          {/* <img
             alt="Nirmukti logo"
             src={} //logo
           />
-          Nirmukti
+          Nirmukti */}
          
         </Typography>
       </Box>

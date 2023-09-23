@@ -9,10 +9,10 @@ import Menu from "./component/menu/Menu";
 import Navbar from "./component/navbar/Navbar";
 import Footer from "./component/footer/Footer";
 import "./styles/global.scss";
-import GettingStarted from "./pages/GettingStarted/GettingStarted";
 import Product from "./pages/Product/Product";
 import User from "./pages/user/User";
 import Users from "./pages/users/Users";
+import { GettingStarted } from "./pages/GettingStarted/GettingStarted";
 
 function App() {
    
